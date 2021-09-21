@@ -1,35 +1,36 @@
-import { ReactNode } from "react"
-import React, { useState, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { ReactNode } from "react";
+import React, { useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 
+
 interface CanvasLayoutProps {
-    children: ReactNode
+    children: ReactNode;
 }
 
 export default function CanvasLayout({ children }: CanvasLayoutProps) {
     // Window Variables
-    const [width, setWidth] = useState(0)
-    const [height, setHeight] = useState(0)
-    const [pixelRatio, setPixelRatio] = useState(0)
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
+    const [pixelRatio, setPixelRatio] = useState(0);
 
     useEffect(() => {
-        const canvas = document.querySelector('.webgl')
+        const canvas = document.querySelector(".webgl");
 
-        setWidth(window.innerWidth)
-        setHeight(window.innerHeight)
-        setPixelRatio(window.devicePixelRatio)
+        setWidth(window.innerWidth);
+        setHeight(window.innerHeight);
+        setPixelRatio(window.devicePixelRatio);
 
         // Resizing
-        window.addEventListener('resize', () => {
-            setWidth(window.innerWidth)
-            setHeight(window.innerHeight)
-            setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        })
+        window.addEventListener("resize", () => {
+            setWidth(window.innerWidth);
+            setHeight(window.innerHeight);
+            setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
 
         // FullScreen Logic
         // window.addEventListener('dblclick', () => {
-        //     // Have yet to find a solution to stop complaining 
+        //     // Have yet to find a solution to stop complaining
         //     // about element not having the property webkitFullscreenElement
 
         //     const document: any = window.document
@@ -47,16 +48,15 @@ export default function CanvasLayout({ children }: CanvasLayoutProps) {
         //         }
         //     }
         // })
-
     }, []);
 
     // Size
     const sizes = {
         width: typeof window !== undefined ? width : undefined,
-        height: typeof window !== undefined ? height : undefined
-    }
+        height: typeof window !== undefined ? height : undefined,
+    };
     // Aspect
-    let aspectRatio = width/height
+    let aspectRatio = width / height;
 
     return (
         <>
@@ -65,17 +65,17 @@ export default function CanvasLayout({ children }: CanvasLayoutProps) {
                 style={{ width: sizes.width, height: sizes.height }}
                 // pixelRatio={pixelRatio}
                 camera={{
-                    position: [0, 0, 3],
+                    position: [0, 0, 3.5],
                     aspect: aspectRatio,
-                    near: 0.1,
-                    far: 100,
+                    near: 0.001,
+                    far: 1000,
+                    fov: 75,
                 }}
             >
                 {children}
-               
+
                 {/* <Perf position={"bottom-right"} /> */}
             </Canvas>
         </>
     );
-
 }

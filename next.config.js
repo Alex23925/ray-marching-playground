@@ -96,11 +96,16 @@ const withImages = require("next-images");
 const { default: next } = require("next");
 const { watch } = require("fs");
 
-// const withTM = require("next-transpile-modules")(
-//     ["three", "@react-three/drei"], // '@react-three/postprocessing'
-//     { debug: debug, __unstable_matcher: match } // symlink-caused loops which cause memory to get bloated exponentially.
-// );
+// Adding back next-transpile-mods fixes threejs examples usage
+// but figure  out a way to make three-stdlib work instead
+const withTM = require("next-transpile-modules")(
+    ["three"], // '@react-three/postprocessing'
+    { debug: debug, __unstable_matcher: match } // symlink-caused loops which cause memory to get bloated exponentially.
+);
 
 // withTM(nextConfig),
 
-module.exports = withPlugins([withImages, withSass], nextConfig);
+module.exports = withPlugins(
+    [withTM(nextConfig), withImages, withSass],
+    nextConfig
+);
